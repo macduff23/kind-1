@@ -106,7 +106,11 @@ rm -f kube-proxy-cm.yaml
 rm -f coredns-cm.yaml
 
 # tweak cluster naming in config so it is identifiable as kind to test clients
-sed -i "s|kubernetes\|kubernetes-admin@kubernetes|kind|g" /root/.kube/config
+sed -i "s|kubernetes-admin@kubernetes|kind|g" /root/.kube/config
+sed -i "s|kubernetes-admin@mk|kind|g" /root/.kube/config
+sed -i "s|kubernetes-admin|kind|g" /root/.kube/config
+sed -i "s|: mk|: kind|g" /root/.kube/config
+sed -i "s|control-plane.minikube.internal|$STATIC_IP|g" /root/.kube/config
 cp /root/.kube/config /var/kube-config/config
 chmod 644 /var/kube-config/*
 
