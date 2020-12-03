@@ -85,6 +85,9 @@ fi
 mkdir -p /root/.kube
 cp /etc/kubernetes/admin.conf /root/.kube/config
 
+# force storage provisioner, as its not default in later versions
+minikube addons enable storage-provisioner || true
+
 # disable unneeded stuff
 minikube addons disable dashboard || true
 /usr/local/bin/kubectl -n kube-system delete deploy kubernetes-dashboard || true
