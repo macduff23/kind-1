@@ -5,6 +5,7 @@ echo $KUBERNETES_VERSION > /var/kube-config/kubernetes-version
 KUBERNETES_MAJOR_MINOR_VERSION="$(echo ${KUBERNETES_VERSION:1} | cut -d. -f 1-2)"
 echo $MINIKUBE_VERSION > /var/kube-config/minikube-version
 echo $STATIC_IP > /var/kube-config/static-ip
+echo "Building against kubernetes $KUBERNETES_VERSION"
 
 # start docker daemon, useful to check how it starts, we want it to be using overlay2 and not show errors etc.
 docker info
@@ -85,7 +86,8 @@ fi
 mkdir -p /root/.kube
 cp /etc/kubernetes/admin.conf /root/.kube/config
 
-# force storage provisioner, as its not default in later versions
+# force storage provisioner, as its not default in later versions, need both or yaml isn't downloaded
+/usr/local/bin/minikube addons enable storage-provisioner || true
 /usr/local/bin/kubectl apply -f /etc/kubernetes/addons/storage-provisioner.yaml || true
 
 # disable unneeded stuff
