@@ -86,6 +86,9 @@ fi
 mkdir -p /root/.kube
 cp /etc/kubernetes/admin.conf /root/.kube/config
 
+# fix .conf files to reference 127.0.0.1 instead of minikube.internal
+sed -i "s|control-plane.minikube.internal|127.0.0.1|g" /etc/kubernetes/*.conf
+
 # force storage provisioner, as its not default in later versions, need both or yaml isn't downloaded
 /usr/local/bin/minikube addons enable storage-provisioner || true
 /usr/local/bin/kubectl apply -f /etc/kubernetes/addons/storage-provisioner.yaml || true
